@@ -1,7 +1,6 @@
 package com.design.cache.service
 
 import com.design.cache.entity.Record
-import jakarta.annotation.PostConstruct
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
