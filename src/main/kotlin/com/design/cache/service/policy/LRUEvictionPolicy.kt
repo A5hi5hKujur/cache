@@ -23,4 +23,9 @@ class LRUEvictionPolicy<Key>: PolicyInterface<Key> {
         dll.detachNode(first)
         return first.data
     }
+
+    fun LRUKey(): Key? {
+        val last = dll.getLastNode() ?: return null
+        return last.data
+    }
 }

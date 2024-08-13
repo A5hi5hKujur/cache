@@ -7,6 +7,8 @@ interface StorageInterface<Key, Value> {
 
     fun get(key:Key): Value?
 
+    fun getAllKeys(): List<Key>
+
     fun isEmpty(): Boolean
 
     fun isFull(): Boolean

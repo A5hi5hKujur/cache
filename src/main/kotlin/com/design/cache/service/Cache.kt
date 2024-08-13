@@ -34,4 +34,8 @@ class Cache<Key, Value>(
             return null
         }
     }
+
+    fun getAllKeys(): List<Key> {
+        return storage.getAllKeys()
+    }
 }

@@ -5,22 +5,31 @@ import com.design.cache.entity.Value
 import com.design.cache.service.exception.KeyNotFoundException
 import com.design.cache.service.exception.StorageFullException
 
-class InMemoryHashMapStorage <K : Any, V>(private val capacity: Int) : StorageInterface<Key<K>, Value<V>> {
-    private var _storage: MutableMap<Key<K>, Value<V>> = HashMap(capacity)
+class InMemoryHashMapStorage <Key : Any, Value>(private val capacity: Int) : StorageInterface<Key, Value> {
+    private var _storage: MutableMap<Key, Value> = HashMap(capacity)
 
-    override fun get(key: Key<K>): Value<V>? {
-        if (!_storage.containsKey(key)) throw KeyNotFoundException(key.value)
+    override fun get(key: Key): Value? {
+        if (!_storage.containsKey(key)) throw KeyNotFoundException(key)
         return _storage[key]
     }
 
-    override fun remove(key: Key<K>): Key<K> {
-        if (!_storage.containsKey(key)) throw KeyNotFoundException(key.value)
+    override fun getAllKeys(): List<Key> {
+        val keyList: MutableList<Key> = mutableListOf()
+        _storage.forEach { entry ->
+            print("${entry.key} : ${entry.value}")
+            keyList.add(entry.key)
+        }
+        return keyList
+    }
+
+    override fun remove(key: Key): Key {
+        if (!_storage.containsKey(key)) throw KeyNotFoundException(key)
         _storage.remove(key)
         return key
     }
 
-    override fun add(key: Key<K>, value: Value<V>) {
-        if (isFull()) throw StorageFullException("Cannot store Key ${key.value}")
+    override fun add(key: Key, value: Value) {
+        if (isFull()) throw StorageFullException("Cannot store Key ${key}")
         _storage[key] = value
     }
 
