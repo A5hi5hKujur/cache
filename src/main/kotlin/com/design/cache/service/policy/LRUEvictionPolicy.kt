@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service
 class LRUEvictionPolicy<Key> (
     private val dll: DoublyLinkedList<Key>
 ): PolicyInterface<Key> {
-//    private val dll: DoublyLinkedList<Key> = DoublyLinkedList()
     private val mapper: MutableMap<Key, DLLNode<Key>> = HashMap()
 
     override fun keyAccessed(key: Key) {

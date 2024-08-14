@@ -1,13 +1,11 @@
 package com.design.cache.service.storage
 
-import com.design.cache.entity.Key
-import com.design.cache.entity.Value
 import com.design.cache.service.exception.KeyNotFoundException
 import com.design.cache.service.exception.StorageFullException
 import org.springframework.stereotype.Repository
-import org.springframework.stereotype.Service
 
-val CAPACITY = 10
+
+const val CAPACITY = 5
 
 @Repository
 class InMemoryHashMapStorage <Key : Any, Value> : StorageInterface<Key, Value> {
@@ -34,7 +32,7 @@ class InMemoryHashMapStorage <Key : Any, Value> : StorageInterface<Key, Value> {
     }
 
     override fun add(key: Key, value: Value) {
-        if (isFull()) throw StorageFullException("Cannot store Key ${key}")
+        if (isFull()) throw StorageFullException("Cannot store Key $key")
         _storage[key] = value
     }
 
