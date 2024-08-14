@@ -12,19 +12,22 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/memhash")
 class CacheController (
     val hashMapLRUCacheService: HashMapLRUCacheService
 ) {
-
     @GetMapping("/")
     fun getAll(): List<String> = hashMapLRUCacheService.getAllKeys()
 
     @GetMapping("/keys/{key}")
     fun getKey(@PathVariable key: String): String? = hashMapLRUCacheService.get(key)
 
-    @PostMapping("/keys/")
+    @PostMapping("/keys")
     fun addKey(@RequestBody data: SimpleAddRequest) = hashMapLRUCacheService.put(data.key, data.value)
 
+    @GetMapping("/last")
+    fun getLastAccessedKey(): String? = hashMapLRUCacheService.getLastAccessedKey()
 
+    @GetMapping("/lru")
+    fun getLRUKey(): String? = hashMapLRUCacheService.getLRUKey()
 }

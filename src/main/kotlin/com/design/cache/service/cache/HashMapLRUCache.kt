@@ -1,14 +1,17 @@
-package com.design.cache.service
+package com.design.cache.service.cache
 
 import com.design.cache.service.exception.KeyNotFoundException
 import com.design.cache.service.exception.StorageFullException
+import com.design.cache.service.policy.LRUEvictionPolicy
 import com.design.cache.service.policy.PolicyInterface
+import com.design.cache.service.storage.InMemoryHashMapStorage
 import com.design.cache.service.storage.StorageInterface
+import org.springframework.stereotype.Repository
 
-
-class Cache<Key, Value>(
-    private val evictionPolicy: PolicyInterface<Key>,
-    private val storage: StorageInterface<Key, Value>
+@Repository
+class HashMapLRUCache<Key : Any, Value>(
+    private val evictionPolicy: LRUEvictionPolicy<Key>,
+    private val storage: InMemoryHashMapStorage<Key, Value>
 ) {
     fun put(key: Key, value: Value) {
         try {
@@ -37,5 +40,13 @@ class Cache<Key, Value>(
 
     fun getAllKeys(): List<Key> {
         return storage.getAllKeys()
+    }
+
+    fun getLastAccessed(): Key? {
+        return evictionPolicy.getLastAccessedKey()
+    }
+
+    fun getLRUKey(): Key? {
+        return evictionPolicy.getLRUKey()
     }
 }

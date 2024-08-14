@@ -2,11 +2,14 @@ package com.design.cache.service.policy
 
 import com.design.cache.entity.DLLNode
 import com.design.cache.service.algorithm.DoublyLinkedList
+import org.springframework.stereotype.Service
 
-class LRUEvictionPolicy<Key>: PolicyInterface<Key> {
-    private val dll: DoublyLinkedList<Key> = DoublyLinkedList()
+@Service
+class LRUEvictionPolicy<Key> (
+    private val dll: DoublyLinkedList<Key>
+): PolicyInterface<Key> {
+//    private val dll: DoublyLinkedList<Key> = DoublyLinkedList()
     private val mapper: MutableMap<Key, DLLNode<Key>> = HashMap()
-
 
     override fun keyAccessed(key: Key) {
        if (mapper.containsKey(key)) {
@@ -24,8 +27,13 @@ class LRUEvictionPolicy<Key>: PolicyInterface<Key> {
         return first.data
     }
 
-    fun LRUKey(): Key? {
+    override fun getLastAccessedKey(): Key? {
         val last = dll.getLastNode() ?: return null
         return last.data
+    }
+
+    fun getLRUKey(): Key? {
+        val first = dll.getFirstNode() ?: return null
+        return first.data
     }
 }

@@ -1,8 +1,9 @@
 package com.design.cache.service.algorithm
 
 import com.design.cache.entity.DLLNode
+import org.springframework.stereotype.Repository
 
-
+@Repository
 class DoublyLinkedList<T> {
     private var dummyHead: DLLNode<T> = DLLNode(null)
     private var dummyTail: DLLNode<T> = DLLNode(null)

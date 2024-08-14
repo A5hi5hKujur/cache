@@ -4,9 +4,14 @@ import com.design.cache.entity.Key
 import com.design.cache.entity.Value
 import com.design.cache.service.exception.KeyNotFoundException
 import com.design.cache.service.exception.StorageFullException
+import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Service
 
-class InMemoryHashMapStorage <Key : Any, Value>(private val capacity: Int) : StorageInterface<Key, Value> {
-    private var _storage: MutableMap<Key, Value> = HashMap(capacity)
+val CAPACITY = 10
+
+@Repository
+class InMemoryHashMapStorage <Key : Any, Value> : StorageInterface<Key, Value> {
+    private var _storage: MutableMap<Key, Value> = HashMap(CAPACITY)
 
     override fun get(key: Key): Value? {
         if (!_storage.containsKey(key)) throw KeyNotFoundException(key)
@@ -34,7 +39,7 @@ class InMemoryHashMapStorage <Key : Any, Value>(private val capacity: Int) : Sto
     }
 
     override fun getRemainingSpace(): Int {
-        return capacity - _storage.size
+        return CAPACITY - _storage.size
     }
 
     override fun isEmpty(): Boolean {
@@ -42,6 +47,6 @@ class InMemoryHashMapStorage <Key : Any, Value>(private val capacity: Int) : Sto
     }
 
     override fun isFull(): Boolean {
-        return _storage.size >= capacity
+        return _storage.size >= CAPACITY
     }
 }
