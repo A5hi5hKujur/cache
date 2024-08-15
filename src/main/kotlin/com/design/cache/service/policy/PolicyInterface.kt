@@ -6,4 +6,6 @@ interface PolicyInterface<Key> {
     fun evictKey(): Key?
 
     fun getLastAccessedKey(): Key?
+
+    fun getLRUKey(): Key?
 }

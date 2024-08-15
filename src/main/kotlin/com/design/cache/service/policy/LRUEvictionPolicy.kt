@@ -31,7 +31,7 @@ class LRUEvictionPolicy<Key> (
         return last.data
     }
 
-    fun getLRUKey(): Key? {
+    override fun getLRUKey(): Key? {
         val first = dll.getFirstNode() ?: return null
         return first.data
     }

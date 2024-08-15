@@ -1,12 +1,12 @@
 package com.design.cache.service
 
-import com.design.cache.service.cache.HashMapLRUCache
+import com.design.cache.service.cache.Cache
 import org.springframework.stereotype.Service
 
 
 @Service
 class HashMapLRUCacheService (
-    private val cache: HashMapLRUCache<String, String>
+    private val cache: Cache<String, String>
 ) {
 
     fun put(key: String, value: String) {
