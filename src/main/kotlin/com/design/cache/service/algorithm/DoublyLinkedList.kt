@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository
 class DoublyLinkedList<T> {
     private var dummyHead: DLLNode<T> = DLLNode(null)
     private var dummyTail: DLLNode<T> = DLLNode(null)
+    private var size = 0
 
     init {
         dummyHead.next  = dummyTail
@@ -19,15 +20,19 @@ class DoublyLinkedList<T> {
         node.next = dummyTail
         dummyTail.prev = node
         node.prev = tailPrev
+        size += 1
     }
 
-    private fun isItemPresent(): Boolean {
+    fun isItemPresent(): Boolean {
         return dummyHead.next !== dummyTail
     }
 
     fun detachNode(node: DLLNode<T>) {
         node.prev?.next = node.next
         node.next?.prev = node.prev
+        node.next = null
+        node.prev = null
+        size -= 1
     }
 
     fun addElementAtLast(data: T?): DLLNode<T> {
@@ -50,6 +55,10 @@ class DoublyLinkedList<T> {
             return null
         }
         return dummyTail.prev
+    }
+
+    fun length(): Int {
+        return size
     }
 
 }

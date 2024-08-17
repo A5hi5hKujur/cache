@@ -4,11 +4,13 @@ import com.design.cache.service.HashMapLRUCacheService
 import com.design.cache.entity.Record
 import com.design.cache.entity.SimpleAddRequest
 import jakarta.websocket.server.PathParam
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -22,6 +24,7 @@ class CacheController (
     @GetMapping("/keys/{key}")
     fun getKey(@PathVariable key: String): String? = hashMapLRUCacheService.get(key)
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/keys")
     fun addKey(@RequestBody data: SimpleAddRequest) = hashMapLRUCacheService.put(data.key, data.value)
 
@@ -30,6 +33,5 @@ class CacheController (
 
     @GetMapping("/lru")
     fun getLRUKey(): String? = hashMapLRUCacheService.getLRUKey()
-
 
 }
