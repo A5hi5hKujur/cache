@@ -5,6 +5,7 @@ import com.design.cache.service.exception.StorageFullException
 import com.design.cache.service.policy.LRUEvictionPolicy
 import com.design.cache.service.policy.PolicyInterface
 import com.design.cache.service.storage.StorageInterface
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -12,6 +13,8 @@ class Cache<Key : Any, Value>(
     private val evictionPolicy: PolicyInterface<Key>,
     private val storage: StorageInterface<Key, Value>
 ) {
+    private val logger = LoggerFactory.getLogger("package.ClassName")
+
     fun put(key: Key, value: Value) {
         try {
             storage.add(key, value)
@@ -24,12 +27,15 @@ class Cache<Key : Any, Value>(
             println("Creating space by evicting item...$keyToRemove")
             put(key, value)
         }
+        logger.info("Least Recently used : ${evictionPolicy.getLRUKey()}")
+        logger.info("Remaining space in storage : ${storage.getRemainingSpace()}")
     }
 
     fun get(key: Key): Value? {
         try {
             val value = storage.get(key)
             evictionPolicy.keyAccessed(key)
+            logger.info("LRU : ${evictionPolicy.getLRUKey()}")
             return value
         } catch (notFoundException: KeyNotFoundException) {
             println("Tried to access non-existing key.")

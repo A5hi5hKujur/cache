@@ -1,5 +1,6 @@
 package com.design.cache.controller
 
+import com.design.cache.controller.exception.KeyNotFoundHTTPException
 import com.design.cache.service.HashMapLRUCacheService
 import com.design.cache.entity.Record
 import com.design.cache.entity.SimpleAddRequest
@@ -22,7 +23,11 @@ class CacheController (
     fun getAll(): List<String> = hashMapLRUCacheService.getAllKeys()
 
     @GetMapping("/keys/{key}")
-    fun getKey(@PathVariable key: String): String? = hashMapLRUCacheService.get(key)
+    fun getKey(@PathVariable key: String): String {
+        val fetchedKey =  hashMapLRUCacheService.get(key)
+        if (fetchedKey.isNullOrEmpty()) throw KeyNotFoundHTTPException(key)
+        return fetchedKey
+    }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/keys")
